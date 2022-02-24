@@ -1,44 +1,16 @@
-version: 0.2
-
-env:
-  shell: bash
-  variables:
-    Code: "php"
-    Success: "NowYouSeeMe"
-       
-phases:
-  install:
-    on-failure: ABORT
-    runtime-versions:
-      python: 3.x
-      java: corretto8
-    commands:
-      - echo installing...
-      - echo StillInstalling...
-    finally:
-      - echo almostInstalled...
-      - echo doneInstalling!
-  pre_build:
-    on-failure: ABORT
-    commands:
-      - echo prebuilding...
-      - echo stillPrebuilding...
-    finally:
-      - echo almostPrebuilt...
-      - echo donePrebuilding!
-  build:
-    on-failure: ABORT
-    commands:
-      - echo building...
-      - echo stillBuilding...
-    finally:
-      - echo almostBuilt...
-      - echo doneBuilding!
-  post_build:
-    on-failure: ABORT
-    commands:
-      - echo postbuilding...
-      - echo stillPostbuilding...
-    finally:
-      - echo almostPostbuilt...
-      - echo donePostbuilding!
+batch:
+  build-graph:
+    - identifier: build1
+      buildspec: batch-buildspec.yml
+      env:
+        variables:
+          BUILD_ID: build1
+      ignore-failure: true
+    - identifier: build2
+      buildspec: batch-buildspec.yml
+      env:
+        variables:
+          BUILD_ID: build2
+      depend-on:
+        - build1
+      ignore-failure: true
